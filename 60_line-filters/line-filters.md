@@ -11,7 +11,7 @@ ___
 ___
 ##### Run Command:
 
-`$ echo test | dart run line-filters.dart`
+`$ cat ./tmp/lines.txt | dart run line-filters.dart`
 
 ##### Results:
 

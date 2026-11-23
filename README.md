@@ -30,7 +30,7 @@ dart run hello-world.dart
 ### Notes on specific lessons
 
 - **Lessons 58–60** (reading/writing files, line-filters): require a `tmp/` directory to exist at runtime. Create it with `mkdir tmp`. Lesson 58 also requires `tmp/dat.txt` containing `hello` and `dart` on separate lines.
-- **Lesson 60** (line-filters): reads from stdin. Run with: `echo test | dart run line-filters.dart`
+- **Lesson 60** (line-filters): reads from stdin. Run with: `cat ./tmp/lines.txt | dart run line-filters.dart`
 - **Lessons 64–66** (command-line args/flags/subcommands): pass arguments after the filename: `dart run command-line-arguments.dart a b c`
 - **Lesson 68** (testing): requires `package:test`. Run with `dart test testing-and-benchmarking_test.dart`
 - **Lessons 56 and 78** (SHA1 and SHA256 hashes): require the external `package:crypto` package. Add `crypto: ^3.0.0` to `pubspec.yaml` and run `dart pub get` before running those lessons.
@@ -81,7 +81,7 @@ Comments are used to document what your code does so that others can understand 
 > | **%**  | remainder of dividing one number by another number |
 > | **++** | increase the value of a variable by 1              |
 > | **--** | decrease the value of a variable by 1              |
-
+>
 > ### Comparison Operators
 >
 > |        |                                                         |
@@ -92,7 +92,7 @@ Comments are used to document what your code does so that others can understand 
 > | **<**  | check if a variable is less than another                |
 > | **>=** | check if a variable is greater than or equal to another |
 > | **<=** | check if a variable is less than or equal to another    |
-
+>
 > ### Logical Operators
 >
 > |          |                                                 |
@@ -100,7 +100,7 @@ Comments are used to document what your code does so that others can understand 
 > | **&&**   | returns true if both statements are true        |
 > | **\|\|** | returns true if one of the statements are true  |
 > | **!**    | reverse the result of a true or false statement |
-
+>
 > ### Assignment Operators
 >
 > |         |                                                                                                              |
@@ -112,7 +112,7 @@ Comments are used to document what your code does so that others can understand 
 > | **/=**  | divide the existing value of a variable by a number and assign the result to variable                        |
 > | **%=**  | take the remainder of the existing value of a variable divided by a number and assign the result to variable |
 > | **??=** | assign only if the variable is currently null                                                                |
-
+>
 > ### Bitwise Operators
 >
 > |        |                        |
@@ -172,7 +172,7 @@ A statement is an instruction that a program can execute. They are usually made 
 > |:-----------:|:-------------------------------------------------------------------------------------------------------|
 > | **if-else** | performs a statement 'if' a condition is met, and if not (ie. 'else') performs the default statement  |
 > | **switch**  | matches a value against patterns and executes the matching branch; supports guards with `when`         |
-
+>
 > ### Iterative Statements
 >
 > |               |                                                                                              |
@@ -181,7 +181,7 @@ A statement is an instruction that a program can execute. They are usually made 
 > | **for-in**    | loop over each element in an Iterable (List, Set, Map keys, etc.)                           |
 > | **while**     | loop while a condition is true; equivalent to Go's condition-only `for`                     |
 > | **do-while**  | loop body executes at least once before checking the condition                               |
-
+>
 > ### Transfer Statements
 >
 > |              |                                             |

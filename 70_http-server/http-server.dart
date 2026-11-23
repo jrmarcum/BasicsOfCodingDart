@@ -24,8 +24,6 @@ Future<void> main() async {
   final server = await HttpServer.bind(
       InternetAddress.loopbackIPv4, 8090);
 
-  print('Listening on http://localhost:8090');
-
   // Process incoming requests.
   await for (final HttpRequest req in server) {
     switch (req.uri.path) {

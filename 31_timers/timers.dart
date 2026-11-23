@@ -17,8 +17,7 @@ Future<void> main() async {
 
   // Timer 2: would fire after 1 second, but we cancel it first.
   // Go's timer2.Stop() returns true if the timer was stopped;
-  // Dart's timer.cancel() has no return value, so we track
-  // cancellation with a flag.
+  // Dart's timer.cancel() has no return value.
   bool timer2Fired = false;
   final timer2 = Timer(const Duration(seconds: 1), () {
     timer2Fired = true;
@@ -26,7 +25,10 @@ Future<void> main() async {
   });
 
   // Cancel before it fires — equivalent to timer2.Stop().
-  final wasStopped = timer2.cancel(); // cancel() returns true if pending
+  // cancel() returns void, so check isActive first to know
+  // whether the timer was still pending.
+  final wasStopped = timer2.isActive;
+  timer2.cancel();
   if (wasStopped) {
     print('Timer 2 stopped');
   }

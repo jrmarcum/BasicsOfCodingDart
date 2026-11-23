@@ -8,7 +8,7 @@ void main() {
 
   stdout(t1('some text'));
   stdout(t1(5));
-  stdout(t1(['Go', 'Rust', 'C++', 'C#']));
+  stdout(t1(['Dart', 'Rust', 'C++', 'C#']));
 
   // Named-field substitution — equivalent to "Name: {{.Name}}"
   String t2(String name) => 'Name: $name\n';
@@ -25,7 +25,7 @@ void main() {
   // Range/loop substitution — equivalent to "Range: {{range .}}{{.}} {{end}}"
   String t4(List<String> items) => 'Range: ${items.join(' ')} \n';
 
-  stdout(t4(['Go', 'Rust', 'C++', 'C#']));
+  stdout(t4(['Dart', 'Rust', 'C++', 'C#']));
 }
 
 // Helper that writes to standard output without an extra newline

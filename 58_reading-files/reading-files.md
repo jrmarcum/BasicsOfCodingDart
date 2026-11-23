@@ -1,8 +1,10 @@
 #### Note: A `tmp` directory and file must exist before running. Create them with `mkdir tmp` then create `tmp/dat.txt` containing:
-```
+
+```text
 hello
 dart
 ```
+
 ___
 ##### Run Command:
 

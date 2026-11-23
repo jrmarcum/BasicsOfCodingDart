@@ -3,11 +3,13 @@
 import 'dart:io';
 
 void main() {
-  // In Dart, there is no `defer` mechanism. Registering a shutdown
-  // callback with addShutdownHook is not available in the core SDK;
-  // code after exit() simply does not run — matching Go's behaviour
-  // where deferred functions are NOT called when os.Exit is used.
-
-  // Exit with status 3.
-  exit(3);
+  // `finally` blocks will NOT run when using exit(), so this
+  // print will never be called — matching Go, where deferred
+  // functions are not run when os.Exit is used.
+  try {
+    // Exit with status 3.
+    exit(3);
+  } finally {
+    print('!');
+  }
 }

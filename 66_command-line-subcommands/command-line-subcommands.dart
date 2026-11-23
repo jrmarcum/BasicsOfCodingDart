@@ -1,6 +1,6 @@
-// Some command-line tools, like the `go` tool or `git`, have many
-// *subcommands*, each with its own set of flags. For example, `go build`
-// and `go get` are two different subcommands of the `go` tool.
+// Some command-line tools, like the `dart` tool or `git`, have many
+// *subcommands*, each with its own set of flags. For example, `dart run`
+// and `dart pub` are two different subcommands of the `dart` tool.
 //
 // Dart has no built-in subcommand/flag-set parser. We check args[0] for
 // the subcommand name and manually parse the remaining arguments.

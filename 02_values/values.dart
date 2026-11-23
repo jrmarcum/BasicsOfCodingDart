@@ -3,7 +3,7 @@
 
 void main() {
   // Strings, which can be added together with `+`.
-  print('go' + 'lang');
+  print('dart' + 'lang');
 
   // Integers and floats.
   print('1+1 = ${1 + 1}');

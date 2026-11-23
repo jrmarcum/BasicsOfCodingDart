@@ -53,8 +53,8 @@ void main() {
   print(r.pattern);
 
   // Replace matches with another value.
-  print(r.replaceAll('a peach', '<fruit>'));
+  print('a peach'.replaceAll(r, '<fruit>'));
 
   // Replace using a function to transform matched text.
-  print(r.replaceAllMapped('a peach', (m) => m.group(0)!.toUpperCase()));
+  print('a peach'.replaceAllMapped(r, (m) => m.group(0)!.toUpperCase()));
 }

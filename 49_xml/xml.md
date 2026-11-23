@@ -17,7 +17,7 @@ ___
 `   <origin>Ethiopia</origin>`
 `   <origin>Brazil</origin>`
 ` </plant>`
-`Plant id=27, name=Coffee, origin=[Ethiopia, Brazil]`
+`Plant id=27, name=Coffee, origin=[Ethiopia Brazil]`
 ` <nesting>`
 `   <parent>`
 `     <child>`

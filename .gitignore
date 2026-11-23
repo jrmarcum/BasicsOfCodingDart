@@ -27,3 +27,9 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# rumdl Markdown linter cache
+.rumdl_cache/
+
+# Runtime scratch directory for lessons 58-60
+tmp/

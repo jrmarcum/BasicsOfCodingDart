@@ -6,19 +6,16 @@
 import 'dart:io';
 
 void main() {
-  // `Uri` can construct platform-independent paths. We join segments
-  // using posix-style separators and let Uri normalise them.
+  // `_join` builds a path from segments using '/' separators, so the
+  // output is the same on every operating system.
   // Equivalent to filepath.Join("dir1", "dir2", "filename") in Go.
-  final p = 'dir1/dir2/filename';
+  final p = _join(['dir1', 'dir2', 'filename']);
   print('p: $p');
 
-  // Normalise a path that contains double separators or redundant segments.
-  // File(path).uri.normalizePath() collapses '//' and '/../' segments.
-  final p2 = Uri.file('dir1//filename').normalizePath().toFilePath();
-  print(p2);
-
-  final p3 = Uri.file('dir1/../dir1/filename').normalizePath().toFilePath();
-  print(p3);
+  // Joining also normalises paths, removing superfluous
+  // separators and directory changes.
+  print(_join(['dir1//', 'filename']));
+  print(_join(['dir1/../dir1', 'filename']));
 
   // Split a path into directory and base name components using File.
   final file = File(p);
@@ -45,15 +42,27 @@ void main() {
       : filename;
   print(stem);
 
-  // Find a relative path from a base to a target using Uri resolution.
+  // Find a relative path from a base to a target.
   // Equivalent to filepath.Rel("a/b", "a/b/t/file") → "t/file"
-  final base1 = Uri.parse('a/b/');
-  final target1 = Uri.parse('a/b/t/file');
-  final rel1 = base1.resolveUri(Uri(path: '')).makeRelativeUri(target1);
   print(_rel('a/b', 'a/b/t/file'));
 
   // filepath.Rel("a/b", "a/c/t/file") → "../c/t/file"
   print(_rel('a/b', 'a/c/t/file'));
+}
+
+/// Joins [parts] with '/' and cleans the result, mirroring filepath.Join:
+/// empty and '.' segments are dropped and '..' removes the previous one.
+String _join(List<String> parts) {
+  final out = <String>[];
+  for (final seg in parts.join('/').split('/')) {
+    if (seg.isEmpty || seg == '.') continue;
+    if (seg == '..' && out.isNotEmpty && out.last != '..') {
+      out.removeLast();
+    } else {
+      out.add(seg);
+    }
+  }
+  return out.join('/');
 }
 
 /// Computes a relative path from [from] to [to], mirroring filepath.Rel.

@@ -9,7 +9,6 @@ Future<void> main() async {
 
   // Close the server when the application exits (Dart handles this via
   // process lifecycle; we defer close in a shutdown hook if needed).
-  print('TCP server listening on port 8090');
 
   // Accept and handle connections in a loop.
   await for (final Socket conn in server) {

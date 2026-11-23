@@ -1,9 +1,10 @@
-#### If you run `exit.dart` using `dart run`, the exit will be picked up by `dart` and printed. Note that Dart has no `defer` mechanism, and code after `exit()` does not run — matching Go's behaviour where deferred functions are NOT called when `os.Exit` is used.
+#### Note: Unlike `go run`, `dart run` does not print the exit status; check it with `echo $?` (PowerShell: `$LASTEXITCODE`). The `!` in the `finally` block never prints because `exit()` ends the program immediately, as Go's `os.Exit` skips `defer`.
 ___
 ##### Run Command:
 
 `$ dart run exit.dart`
+`$ echo $?`
 
 ##### Results:
 
-`exit status 3`
+`3`

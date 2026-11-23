@@ -3,6 +3,7 @@
 // receives a SIGTERM, or a tool to stop if it receives a SIGINT.
 // Dart exposes Unix signals via ProcessSignal in `dart:io`.
 
+import 'dart:async';
 import 'dart:io';
 
 Future<void> main() async {
@@ -11,26 +12,31 @@ Future<void> main() async {
   // the signal is received — equivalent to signal.NotifyContext in Go.
   print('awaiting signal');
 
-  // Listen for SIGINT and SIGTERM concurrently.
-  final sigintStream = ProcessSignal.sigint.watch();
+  // Listen for SIGINT and, where supported, SIGTERM.
   // SIGTERM is not supported on Windows; guard accordingly.
-  Stream<ProcessSignal>? sigtermStream;
-  if (!Platform.isWindows) {
-    sigtermStream = ProcessSignal.sigterm.watch();
+  final signals = [
+    ProcessSignal.sigint,
+    if (!Platform.isWindows) ProcessSignal.sigterm,
+  ];
+
+  // Complete with whichever signal arrives first.
+  final done = Completer<ProcessSignal>();
+  final subs = [
+    for (final s in signals)
+      s.watch().listen((sig) {
+        if (!done.isCompleted) done.complete(sig);
+      }),
+  ];
+  final received = await done.future;
+
+  // Cancel every watcher so the program can exit.
+  for (final sub in subs) {
+    await sub.cancel();
   }
 
-  // Wait for whichever signal arrives first.
-  ProcessSignal received;
-  if (sigtermStream != null) {
-    received = await Future.any([
-      sigintStream.first,
-      sigtermStream.first,
-    ]);
-  } else {
-    received = await sigintStream.first;
-  }
-
+  // Print the signal using Go's names for it.
+  final name = received == ProcessSignal.sigint ? 'interrupt' : 'terminated';
   print('');
-  print('$received signal received');
+  print('$name signal received');
   print('exiting');
 }

@@ -7,7 +7,7 @@ of code, and performance. Each language implements the same 78 example
 programs so they can be compared side-by-side.
 
 The source of truth for program logic and expected output is **Basics of
-Coding Go** by Jon Marcum (https://github.com/jrmarcum/BasicsOfCodingGo).
+Coding Go** by Jon Marcum (<https://github.com/jrmarcum/BasicsOfCodingGo>).
 The upstream submodule at `upstream/basicsofcodinggo/` is not currently
 initialized in this repo — use `BasicsOfCodingV/upstream/basicsofcodinggo/`
 on the local machine as the Go reference instead.
@@ -17,13 +17,14 @@ implemented. Each lesson has both a `.dart` source file and a `.md` file.
 
 ## Project Structure
 
-```
+```text
 BasicsOfCodingDart/
 ├── CLAUDE.md
 ├── LICENSE            — CC0 (Jon Marcum original contributions)
 ├── NOTICE             — CC BY 3.0 attribution for derived lesson content
 ├── README.md
-├── pubspec.yaml       — declares package:crypto for lessons 56 and 78
+├── .rumdl.toml
+├── pubspec.yaml       — package:crypto (lessons 56, 78), package:test (68)
 └── ##_topic-name/
     ├── topic-name.dart
     └── topic-name.md
@@ -32,9 +33,21 @@ BasicsOfCodingDart/
 All 78 lessons: `01_hello-world` through `78_sha256-hashes`.
 Numbers match BasicsOfCodingGo exactly — do not renumber.
 
+**Topic names:** Go-specific topic names are renamed to their Dart equivalent
+(number unchanged, as in BasicsOfCodingCSharp): 09 slices→`lists`,
+11 range→`for-in`, 17 pointers→`references`, 18 structs→`classes`,
+23 struct-embedding→`class-composition`, 27 goroutines→`futures`,
+28 channels→`streams`, 29 select→`completers`, 33 mutexes→`shared-state`,
+34 atomic-counters→`async-counters`, 35 waitgroups→`future-wait`,
+38 recover→`try-catch`, 42 panic→`throw`, 43 defer→`try-finally`,
+71 context→`cancellation`. Topics with real Dart equivalents keep their names
+(e.g. `closures`, `strings-and-runes` = `String.runes`). Program content uses
+Dart terms too (`dartlang`, `future : 0`); only comments and notes that
+compare against the Go source mention Go.
+
 ## Lesson .md Format (exact, no deviations)
 
-```
+```text
 [#### Note: optional one-liner only when Dart differs from Go]
 [___ only present when a Note line appears above it]
 
@@ -70,7 +83,7 @@ document the difference in the lesson `.md` Note line.
 - **58–60** (reading/writing files, line-filters): require a `tmp/`
   directory at runtime (gitignored, create manually). Lesson 58 also needs
   `tmp/dat.txt` containing `hello\n[lang]\n`. Lesson 60 reads from stdin:
-  run with `echo test | dart run line-filters.dart`.
+  run with `cat ./tmp/lines.txt | dart run line-filters.dart`.
 - **50–52, 32, 37**: time-dependent output — note in `.md` that results vary.
 - **27–37** (concurrency): nondeterministic per-isolate ordering — note in `.md`.
 - **64–66** (command-line args/flags/subcommands): pass args after the
@@ -78,6 +91,14 @@ document the difference in the lesson `.md` Note line.
 - **68** (testing-and-benchmarking): use `package:test`. Run with
   `dart test testing-and-benchmarking_test.dart`. Has both `topic.dart`
   and `topic_test.dart` files.
+- **76** (signals): to send a real Ctrl+C on Windows from a script, run the
+  sender in its own console, call `SetConsoleCtrlHandler(NULL, FALSE)`
+  (hosted shells start with Ctrl+C disabled and children inherit it), protect
+  the sender with its own handler, start the lesson, then call
+  `GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0)`. Launch the real `dart.exe`
+  (e.g. Flutter's `bin/cache/dart-sdk/bin/dart.exe`), not the `dart.bat`
+  wrapper — cmd stops at "Terminate batch job (Y/N)?". On Linux,
+  `kill -INT` the `dartvm` process running `signals.dart`.
 - **78** (SHA256): requires `package:crypto`. Add `crypto: ^3.0.0` to
   `pubspec.yaml` and run `dart pub get` before running.
 
@@ -89,7 +110,7 @@ document the difference in the lesson `.md` Note line.
 
 **Toolchain:** Dart 3.x+
 
-```
+```text
 $ dart run filename.dart
 $ dart compile exe filename.dart   # compile to native binary
 $ dart test                        # run tests (lesson 68)
@@ -138,14 +159,15 @@ $ dart pub get                     # install pubspec.yaml dependencies
   consistent (not random) output in Dart — document in `.md` if ordering
   differs from the Go output shown in the upstream reference.
 - **No shared-memory atomics**: Dart isolates share no memory. Lessons that
-  use `sync/atomic` in Go use `Isolate` message passing in Dart.
+  use `sync/atomic` in Go rely on Dart's single-threaded event loop instead
+  (lesson 34 `async-counters`).
 - **Read-only environment**: `Platform.environment` is read-only; there is
-  no `os.Setenv` equivalent. Lesson 53 (environment-variables) documents this.
+  no `os.Setenv` equivalent. Lesson 67 (environment-variables) documents this.
 - **No syscall.Exec**: Dart has no `exec`-style process replacement.
   Use `Process.run()` for subprocess execution instead.
 - **SIGTERM on Windows**: `ProcessSignal.sigterm` is not supported on
   Windows. The signal lesson notes this platform limitation.
-- **No chdir**: Dart has no `os.Chdir` equivalent. Lesson 53 notes this.
+- **No chdir**: Dart has no `os.Chdir` equivalent.
 - Lesson 15 (closures): Dart has native closures; no workaround needed.
 - Lesson 44 (collection-functions): `List` has `.map()`, `.where()`,
   `.reduce()`, `.fold()` natively.
@@ -158,3 +180,11 @@ $ dart pub get                     # install pubspec.yaml dependencies
 
 **.gitignore:** `.dart_tool/`, `.packages`, `build/`, `doc/api/`,
 `pubspec.lock`, `tmp/`
+
+## Markdown Linting
+
+Markdown is linted with rumdl (VS Code extension `rvben.rumdl`), configured by
+`.rumdl.toml`. The lesson `.md` house style (`___` separators,
+`##### Run Command:` / `##### Results:` headings, verbatim output in code spans)
+is intentional; disable a conflicting rule in `.rumdl.toml` rather than
+reformatting lessons. `upstream/` is excluded from linting.
